@@ -1,0 +1,38 @@
+## Interface: 16001
+## Title: Routewise – In-game GPS
+## Title-deDE: Routewise – Ingame-GPS
+## Notes: Route planner with flight masters, ships, zeppelins and walking paths
+## IconTexture: Interface\Icons\INV_Misc_Map_01
+## Notes-frFR: Planificateur d'itinéraire : maîtres de vol, bateaux, zeppelins et chemins à pied
+## Notes-esES: Planificador de rutas con maestros de vuelo, barcos, zepelines y caminos a pie
+## Notes-esMX: Planificador de rutas con maestros de vuelo, barcos, zepelines y caminos a pie
+## Notes-itIT: Pianificatore di percorsi con maestri di volo, navi, zeppelin e sentieri
+## Notes-ptBR: Planejador de rotas com mestres de voo, navios, zepelins e caminhos a pé
+## Notes-ruRU: Планировщик маршрутов: полеты, корабли, дирижабли и пешие пути
+## Notes-koKR: 비행 조련사, 배, 비행선, 도보를 이용한 경로 탐색기
+## Notes-zhCN: 路线规划：飞行点、船只、飞艇和步行路线
+## Notes-zhTW: 路線規劃：飛行點、船隻、飛艇與步行路線
+## Notes-deDE: Routenplaner mit Flugmeistern, Schiffen, Zeppelinen und Fußwegen
+## Author: Rottgar85
+## Version: 0.1.0
+## SavedVariables: RoutewiseDB
+## SavedVariablesPerCharacter: RoutewiseCharDB
+## X-Curse-Project-ID: 1796421
+
+Core.lua
+Locale.lua
+Util.lua
+Data/Transport.lua
+Data/Instances.lua
+MapResolver.lua
+Taxi.lua
+Hostile.lua
+Graph.lua
+Pathfinder.lua
+Navigator.lua
+NavHUD.lua
+MapOverlay.lua
+UI.lua
+Dungeons.lua
+Options.lua
+Commands.lua

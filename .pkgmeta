@@ -1,0 +1,18 @@
+# Packager-Einstellungen (BigWigsMods/packager): baut die ZIP fuer CurseForge, Wago und GitHub
+package-as: Routewise
+
+ignore:
+  - .github
+  - .claude
+  - .githooks
+  - .tools
+  - CLAUDE.md
+  - VEROEFFENTLICHEN.md
+  - README.md
+  - .luacheckrc
+  - docs
+  - "*.zip"
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
