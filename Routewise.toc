@@ -14,7 +14,7 @@
 ## Notes-zhTW: 路線規劃：飛行點、船隻、飛艇與步行路線
 ## Notes-deDE: Routenplaner mit Flugmeistern, Schiffen, Zeppelinen und Fußwegen
 ## Author: Rottgar85
-## Version: 0.1.0
+## Version: 0.1.1
 ## SavedVariables: RoutewiseDB
 ## SavedVariablesPerCharacter: RoutewiseCharDB
 ## X-Curse-Project-ID: 1796421

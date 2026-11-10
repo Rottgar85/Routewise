@@ -6,15 +6,25 @@ WF.Taxi = T
 
 local CONTINENTS = { { id = 1414, "Kalimdor" }, { id = 1415, "Eastern Kingdoms", "Östliche Königreiche" } }
 
+-- Nur diese Typen bedeuten "Flugpunkt hat der Charakter" (Forever meldet unbekannte als "DISTANT")
+local KNOWN_TYPES = { CURRENT = true, REACHABLE = true }
+
+local function ContinentMap(names)
+  return (C_Map.GetMapInfo(names.id) and names.id) or WF.MapResolver.Find(names)
+end
+
 -- Alle Flugmeister der Kontinente mit Status (bekannt/unbekannt) und Fraktion
 function T.GetNodes()
   local out = {}
   if not C_TaxiMap or not C_TaxiMap.GetTaxiNodesForMap then return out end
   for _, names in ipairs(CONTINENTS) do
-    local mapID = (C_Map.GetMapInfo(names.id) and names.id) or WF.MapResolver.Find(names)
+    local mapID = ContinentMap(names)
+    local seen = mapID and WF.char.taxiSeen[mapID]
     for _, n in ipairs(mapID and C_TaxiMap.GetTaxiNodesForMap(mapID) or {}) do
-      -- MapTaxiNodeInfo hat kein "state", nur "isUndiscovered" (fehlt das Feld, zählt nur, was wir selbst gelernt haben)
-      local known = n.isUndiscovered == false or WF.char.knownTaxi[n.name] or false
+      -- Auf einem Kontinent, dessen Flugkarte der Charakter schon offen hatte, zählt nur, was das Spiel dort
+      -- als erreichbar gemeldet hat; sonst "isUndiscovered" (MapTaxiNodeInfo hat kein "state").
+      local learned = WF.char.knownTaxi[n.name] == true
+      local known = learned or (not seen and n.isUndiscovered == false)
       local x, y = n.position:GetXY()
       out[#out + 1] = { id = "TAXI_" .. n.nodeID, nodeID = n.nodeID, taxiName = n.name, known = known,
                         mapID = mapID, x = x, y = y, kind = "taxi",
@@ -32,16 +42,28 @@ local flight, currentName, pending
 
 f:SetScript("OnEvent", function(_, e)
   if e == "TAXIMAP_OPENED" then
-    local links = WF.db.taxiLinks
+    local links, listed = WF.db.taxiLinks, {}
     for i = 1, NumTaxiNodes() do
       local name, typ = TaxiNodeName(i), TaxiNodeGetType(i)
-      if typ ~= "NONE" then WF.char.knownTaxi[name] = true end
+      if name then
+        listed[name] = true
+        WF.char.knownTaxi[name] = KNOWN_TYPES[typ] or nil
+      end
       if typ == "CURRENT" then currentName = name end
       -- Hops dieser Strecke: jede Teilstrecke ist eine echte Flugverbindung
       for r = 1, GetNumRoutes(i) do
         local a = TaxiNodeName(TaxiGetNodeSlot(i, r, true))
         local b = TaxiNodeName(TaxiGetNodeSlot(i, r, false))
         if a and b then links[a .. ">" .. b] = true; links[b .. ">" .. a] = true end
+      end
+    end
+    -- Kontinent dieser Flugkarte merken: dort gilt ab jetzt nur noch das Gelernte
+    if C_TaxiMap and C_TaxiMap.GetTaxiNodesForMap then
+      for _, names in ipairs(CONTINENTS) do
+        local mapID = ContinentMap(names)
+        for _, n in ipairs(mapID and C_TaxiMap.GetTaxiNodesForMap(mapID) or {}) do
+          if listed[n.name] then WF.char.taxiSeen[mapID] = true; break end
+        end
       end
     end
     WF:Fire("GRAPH_DIRTY")

@@ -34,7 +34,12 @@ f:SetScript("OnEvent", function(_, event, arg1)
   if event == "ADDON_LOADED" and arg1 == ADDON then
     RoutewiseDB = RoutewiseDB or {}
     RoutewiseCharDB = RoutewiseCharDB or {}
+    -- bis 0.1.0 wurden auch unbekannte Flugpunkte ("DISTANT") als bekannt gespeichert: einmal neu lernen
+    if RoutewiseCharDB.taxiVer ~= 2 then
+      RoutewiseCharDB.knownTaxi, RoutewiseCharDB.taxiSeen, RoutewiseCharDB.taxiVer = {}, {}, 2
+    end
     RoutewiseCharDB.knownTaxi = RoutewiseCharDB.knownTaxi or {}
+    RoutewiseCharDB.taxiSeen = RoutewiseCharDB.taxiSeen or {}
     -- ältere Versionen haben das beim Ziel "Kartenwegpunkt" dauerhaft abgeschaltet
     if RoutewiseDB.useNativeWaypoint == false then RoutewiseDB.useNativeWaypoint = nil end
     WF.db = setmetatable(RoutewiseDB, { __index = defaults })

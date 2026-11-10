@@ -1,5 +1,17 @@
 # Routewise Changelog
 
+## 0.1.1
+
+**English**
+- Routes only use flight points your character already has; unknown ones were counted as known before
+- The list of known flight points is rebuilt once: talk to a flight master on each continent
+- `/rwise debug` shows how many flight points are known
+
+**Deutsch**
+- Routen nutzen nur noch Flugpunkte, die dein Charakter schon hat; vorher zählten auch unbekannte als bekannt
+- Die Liste der bekannten Flugpunkte wird einmal neu aufgebaut: auf jedem Kontinent einmal einen Flugmeister ansprechen
+- `/rwise debug` zeigt, wie viele Flugpunkte bekannt sind
+
 ## 0.1.0
 
 **English**

@@ -11,8 +11,10 @@ SlashCmdList.ROUTEWISE = function(msg)
     local z = #WF.MapResolver.Zones()
     local d = WF.Dungeons.Build()
     local raids = 0; for _, i in ipairs(d) do if i.raid then raids = raids + 1 end end
-    WF:Print(("Zones: %d | Instances: %d (raids: %d) | from game data: %d | from list: %d | flight masters: %d"):format(
-      z, #d, raids, WF.Dungeons.stats.ej, WF.Dungeons.stats.static, #WF.Taxi.GetNodes()))
+    local taxi, knownTaxi = WF.Taxi.GetNodes(), 0
+    for _, n in ipairs(taxi) do if n.known then knownTaxi = knownTaxi + 1 end end
+    WF:Print(("Zones: %d | Instances: %d (raids: %d) | from game data: %d | from list: %d | flight masters: %d (known: %d)"):format(
+      z, #d, raids, WF.Dungeons.stats.ej, WF.Dungeons.stats.static, #taxi, knownTaxi))
     local m = C_Map.GetBestMapForUnit("player"); local info = m and C_Map.GetMapInfo(m)
     WF:Print(("Map: %s (%s), type %s"):format(info and info.name or "?", tostring(m), tostring(info and info.mapType)))
   elseif cmd == "map" then WF.UI.FromMapWaypoint()
